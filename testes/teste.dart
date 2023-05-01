@@ -6,8 +6,8 @@ void main() {
   final db = sqlite3.open('example.db');
 
   // Cria uma tabela de usuários com duas colunas: id e nome
-  db.execute('''
-    CREATE TABLE users(
+  db.execute('''  
+    CREATE TABLE IF NOT EXISTS users(
       id INTEGER PRIMARY KEY,
       name TEXT NOT NULL
     );
