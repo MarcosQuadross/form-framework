@@ -6,7 +6,7 @@ import 'package:sqlite3/sqlite3.dart';
 
 String gerar_form(dynamic campos) {
   String html =
-      '<!DOCTYPE html><html><head><title>Formulário</title></head><body><form method="post">';
+      '<!DOCTYPE html><html><head><title>Formulário</title></head><body><form method="POST">';
 
   InstanceMirror instanceMirror = reflect(campos);
   ClassMirror classMirror = instanceMirror.type;
@@ -14,7 +14,7 @@ String gerar_form(dynamic campos) {
   for (var fieldName in classMirror.instanceMembers.keys) {
     var field = classMirror.declarations[fieldName];
     if (field is VariableMirror) {
-      String name = MirrorSystem.getName(field.simpleName);
+      MirrorSystem.getName(field.simpleName);
       var fieldType = field.type.reflectedType;
 
       if (fieldType == Texto) {
@@ -43,41 +43,6 @@ String gerar_form(dynamic campos) {
   return html;
 }
 
-// String gerar_tabela(dynamic campos) {
-//   var db = sqlite3.open('dados.db');
-
-//   InstanceMirror instanceMirror = reflect(campos);
-//   ClassMirror classMirror = instanceMirror.type;
-
-//   String tabela = '';
-
-//   for (var fieldName in classMirror.instanceMembers.keys) {
-//     var field = classMirror.declarations[fieldName];
-//     if (field is VariableMirror) {
-//       String name = MirrorSystem.getName(field.simpleName);
-//       var fieldType = field.type.reflectedType;
-
-//       if (fieldType == Texto) {
-//         var texto =
-//             instanceMirror.getField(field.simpleName).reflectee as Texto;
-//         tabela += '${texto.nome} TEXT,';
-//       } else if (fieldType == Data) {
-//         var data = instanceMirror.getField(field.simpleName).reflectee as Data;
-//         tabela += '${data.nome} DATE,';
-//       } else if (fieldType == Frase) {
-//         var frase =
-//             instanceMirror.getField(field.simpleName).reflectee as Frase;
-//         tabela += '${frase.nome} TEXT,';
-//       }
-//     }
-//   }
-
-//   tabela = tabela.substring(0, tabela.length - 1); // remove a vírgula final
-
-//   db.execute('CREATE TABLE formulario ($tabela)');
-
-//   return tabela;
-// }
 String gerar_tabela(dynamic campos) {
   var file = File('dados.db');
   if (!file.existsSync()) {
@@ -108,15 +73,13 @@ String gerar_tabela(dynamic campos) {
       String nomeModificado = criarNomeModificado(name);
 
       if (fieldType == Texto) {
-        var texto =
-            instanceMirror.getField(field.simpleName).reflectee as Texto;
+        instanceMirror.getField(field.simpleName).reflectee as Texto;
         tabela += '$nomeModificado TEXT,';
       } else if (fieldType == Data) {
-        var data = instanceMirror.getField(field.simpleName).reflectee as Data;
+        instanceMirror.getField(field.simpleName).reflectee as Data;
         tabela += '$nomeModificado DATE,';
       } else if (fieldType == Frase) {
-        var frase =
-            instanceMirror.getField(field.simpleName).reflectee as Frase;
+        instanceMirror.getField(field.simpleName).reflectee as Frase;
         tabela += '$nomeModificado TEXT,';
       }
     }
@@ -124,7 +87,8 @@ String gerar_tabela(dynamic campos) {
 
   tabela = tabela.substring(0, tabela.length - 1); // remove a vírgula final
 
-  db.execute('CREATE TABLE formulario ($tabela)');
+  db.execute('DROP TABLE IF EXISTS formulario ');
+  db.execute('CREATE TABLE IF NOT EXISTS formulario ($tabela)');
 
   return tabela;
 }
