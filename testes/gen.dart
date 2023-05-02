@@ -123,9 +123,9 @@ void createConnDb(List objs) {
     content += '    \'\'\');\n\n';
 
     content += '    final stmt = db.prepare(\'\'\'\n';
-    content += '      INSERT INTO ${inst.toString().toLowerCase()} ($cols)\n';
-    content += '      VALUES (${values.join(\', \')})\n';
-    content += '    \'\'\');\n\n';
+    content += ' INSERT INTO ${inst.toString().toLowerCase()} ($cols)\n';
+    content += ' VALUES (${values.join(\', \')})\n';
+    content += ' \'\');\n\n';
 
     content += '    getAttributes(inst()).asMap().forEach((i, attr) {\n';
     content += '      stmt.bind(i + 1, params[attr]);\n';
@@ -142,5 +142,13 @@ void createConnDb(List objs) {
     content += '  final server = await serve(app, InternetAddress.anyIPv4, port);\n';
     content += '  print(\'Servidor rodando na porta: \${server.port}\');\n';
     content += '}\n';
+}
+}
 
-   
+
+void main() {
+  final input = Platform.script.path;
+  final objs = getObjects(input);
+  genForm(objs);
+  createConnDb(objs);
+}
