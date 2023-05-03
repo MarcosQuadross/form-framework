@@ -1,7 +1,7 @@
 import 'reflexao.dart';
 import 'models.dart';
 
-class Campos {
+class Pessoa {
   Texto nome = Texto('Nome', 'Digite seu nome', 1);
   Texto sobrenome = Texto('Sobrenome', 'Digite seu sobrenome', 2);
   Data nascimento = Data('Nascimento', DateTime.now(), 'Data de nascimento', 3);
@@ -10,7 +10,7 @@ class Campos {
 }
 
 void main() {
-  Campos campos = Campos();
+  Pessoa campos = Pessoa();
   gerar_form(campos);
   gerar_tabela(campos);
 }
